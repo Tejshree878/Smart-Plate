@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe and Diet Tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/script.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1><a href="index.html"><img src="assets/logo.png"></a></h1>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="feedback.html">Feedback</a></li>
+            </ul>
+        </nav>
+        <h2>Welcome To</h2>
+        <h1 style="font-size: 40px; margin-top: -20px;">Smart<span>Plate</span></h1>
+    </header>
+
+    <main>
+        <div class="card-container">
+            <div class="card" onclick="navigateTo('fitness-routine.html')">
+                <h2>🏋🏻Fitness Routine Recommender</h2>
+                <p>Generate a routine that keeps you Fit 'n Fine all the time!</p>
+            </div>
+
+            <div class="card" onclick="navigateTo('bmi-calculator.html')">
+                <h2>🔢BMI Calculator</h2>
+                <p>Calculate your BMI and get diet suggestions.</p>
+            </div>
+
+            <div class="card" onclick="navigateTo('grocery-manager.html')">
+                <h2>🛒Grocery Manager</h2>
+                <p>Plan your grocery shopping efficiently.</p>
+            </div>
+
+            <div class="card" onclick="navigateTo('recipe-finder.html')">
+                <h2>🍪Search Recipes</h2>
+                <p>Your favorite recipes just one click away!</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Smart Plate</p>
+    </footer>
+</body>
+</html>

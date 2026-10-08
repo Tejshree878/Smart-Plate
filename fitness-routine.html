@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitness Routine Recommender</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #fae9b7;
+    }
+
+    header {
+        width: 100%;
+        background-color: #28a745;
+        padding: 1.5rem;
+    }
+
+    h1 {
+        color: #fff;
+        text-align: center;
+        margin: 50px;
+        margin-left: auto;
+    }
+
+    .back-button {
+        background-color: #28a745;
+        position: absolute;
+        border: none;
+        left: 10px;
+        top: 45px;
+    }
+
+    .back-button:hover {
+        background-color: #218838;
+    }
+
+    .selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 30px;
+      margin-top: 30px;
+    }
+    select, button {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1em;
+      min-width: 180px;
+    }
+
+    button {
+        background-color: #28a745;
+        color: #fff;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #218838;
+    }
+    .routines {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card h3 {
+      margin: 10px 0;
+      color: #2c3e50;
+    }
+    .card p {
+      color: #555;
+    }
+    iframe {
+      width: 100%;
+      border-radius: 12px;
+      aspect-ratio: 16 / 9;
+    }
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      select, button {
+        font-size: 0.9em;
+      }
+    }
+  </style>
+</head>
+<body>
+    <header>
+        <button class="back-button" onclick="goBack()">← Back</button>
+        <h1>💪Fitness Routine Recommender</h1>
+        <h3 style="text-align: center;color: white;"> Get custom exercise plans based on your BMI category and personal health goals!</h3><br>
+        </header>
+  <div class="selector">
+        <label style="margin-top: 10px;">BMI Category:</label>
+        <select id="bmiCategory">
+            <option value="normal">Normal</option>
+            <option value="underweight">Underweight</option>
+            <option value="overweight">Overweight</option>
+            <option value="obese">Obese</option>
+        </select>
+        <label style="margin-top: 10px;">Goal:</label>
+        <select id="goal">
+            <option value="general">General Fitness</option>
+            <option value="weightloss">Weight Loss</option>
+            <option value="muscle">Muscle Gain</option>
+        </select>
+        <button onclick="recommendRoutine()">Recommend Routine</button>
+  </div>
+
+  <div class="routines" id="routineOutput"></div>
+
+  <script>
+    const routines = {
+      underweight: {
+        muscle: [
+          { title: "Push Ups", desc: "3 sets of 10 reps", video: "https://www.youtube.com/embed/IODxDxX7oi4" },
+          { title: "Squats", desc: "3 sets of 15 reps", video: "https://www.youtube.com/embed/aclHkVaku9U" },
+        ],
+        general: [
+          { title: "Jumping Jacks", desc: "3 sets of 30 seconds", video: "https://www.youtube.com/embed/c4DAnQ6DtF8" },
+        ],
+      },
+      normal: {
+        general: [
+          { title: "Lunges", desc: "3 sets of 10 reps per leg", video: "https://www.youtube.com/embed/QOVaHwm-Q6U" },
+          { title: "Plank", desc: "3 rounds of 30 seconds", video: "https://www.youtube.com/embed/pSHjTRCQxIw" },
+        ],
+        weightloss: [
+          { title: "Burpees", desc: "3 sets of 10 reps", video: "https://www.youtube.com/embed/TU8QYVW0gDU" },
+        ],
+      },
+      overweight: {
+        weightloss: [
+          { title: "Brisk Walk in Place", desc: "5 minutes", video: "https://www.youtube.com/embed/5P8z4J2rZQo" },
+          { title: "Wall Sits", desc: "3 rounds of 30 seconds", video: "https://www.youtube.com/embed/y-wV4Venusw" },
+        ],
+        general: [
+          { title: "Step-Ups", desc: "3 sets of 10 reps", video: "https://www.youtube.com/embed/aajhW7DD1EA" },
+        ],
+      },
+      obese: {
+        weightloss: [
+          { title: "Seated Leg Raises", desc: "3 sets of 10 reps per leg", video: "https://www.youtube.com/embed/E5dG2mI1Vgo" },
+          { title: "Chair Marching", desc: "3 sets of 30 seconds", video: "https://www.youtube.com/embed/MKe9CqoYb9I" },
+        ],
+        general: [
+          { title: "Arm Circles", desc: "3 sets of 20 seconds", video: "https://www.youtube.com/embed/eDXQfFXkqrs" },
+        ],
+      },
+    };
+
+    function recommendRoutine() {
+      const bmi = document.getElementById("bmiCategory").value;
+      const goal = document.getElementById("goal").value;
+      const output = document.getElementById("routineOutput");
+      output.innerHTML = "";
+
+      const selected = routines[bmi][goal] || routines[bmi].general;
+      selected.forEach(ex => {
+        output.innerHTML += `
+          <div class="card">
+            <h3>${ex.title}</h3>
+            <p>${ex.desc}</p>
+            <iframe src="${ex.video}" frameborder="0" allowfullscreen></iframe>
+          </div>
+        `;
+      });
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+  </script>
+</body>
+</html>

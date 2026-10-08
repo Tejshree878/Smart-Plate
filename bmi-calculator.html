@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #fae9b7;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            width: 100%;
+            background-color: #28a745;
+        }
+
+        h1 {
+            color: #fff;
+            margin: 50px;
+            margin-left: auto;
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button {
+            background-color: #28a745;
+            position: absolute;
+            left: 10px;
+            top: 45px;
+        }
+
+        .back-button:hover {
+            background-color: #218838;
+        }
+
+        .back-button, h1 {
+            display: inline-block;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        #supplement {
+            margin-top: 15px;
+        }
+
+        #suggest ul {
+            text-align: left;
+            display: inline-block;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #suggest ul li {
+            background-color: white;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        #diet {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+<script>
+    let category = "";
+
+    function bmiCalculator(){
+
+        var w = document.getElementById("weight").value;
+        var h = document.getElementById("height").value / 100;
+
+        var bmi = (w / (h ** 2)).toFixed(1);
+        //var category = "";
+
+        if (bmi < 18.5){
+            category = "Underweight";
+        }
+        else if (bmi >= 18.5 && bmi <= 24.9){
+            category = "Normal weight";
+        }
+        else if(bmi >= 25 && bmi <= 29.9){
+            category = "Overweight";
+        }
+        else {
+            category = "Obese";
+        }
+
+        document.getElementById("result").innerHTML = `BMI: ${bmi} Category: ${category}`;
+
+    }
+
+    function supplements(){
+
+        let supplementInfo = {
+            "Underweight": [
+                { name: "Protein Powder", use: "Helps in muscle building and weight gain." },
+                { name: "Vitamin D & Calcium", use: "Supports bone health and immunity." },
+                { name: "Omega-3 Fatty Acids", use: "Improves heart and brain function." },
+                { name: "Multivitamins", use: "Fills nutritional gaps and supports overall health." },
+                { name: "Probiotics", use: "Aids digestion and gut health." }
+            ],
+            "Normal weight": [
+                { name: "Vitamin C & Zinc", use: "Boosts immune function and skin health." },
+                { name: "Magnesium", use: "Supports muscle function and relaxation." },
+                { name: "B-Complex Vitamins", use: "Improves energy levels and brain function." },
+                { name: "Collagen & Biotin", use: "Enhances skin, hair, and nail health." },
+                { name: "Probiotics", use: "Promotes gut health and digestion." }
+            ],
+            "Overweight": [
+                { name: "Green Tea Extract", use: "Aids in metabolism and fat burning." },
+                { name: "L-Carnitine", use: "Helps convert fat into energy." },
+                { name: "Fiber Supplements", use: "Supports digestion and appetite control." },
+                { name: "Chromium Picolinate", use: "Regulates blood sugar levels." },
+                { name: "Omega-3 Fatty Acids", use: "Supports heart and brain health." }
+            ],
+            "Obese": [
+                { name: "Apple Cider Vinegar Capsules", use: "Helps control appetite and blood sugar." },
+                { name: "Berberine", use: "Supports healthy blood sugar levels and weight loss." },
+                { name: "Turmeric", use: "Has anti-inflammatory properties and aids digestion." },
+                { name: "Vitamin D & Magnesium", use: "Improves bone strength and energy levels." }
+            ]
+        };
+
+        if (category === "Underweight"){
+            var dietTip = "💡Diet Tip:  Increase calorie-dense foods with healthy fats and proteins.";
+            document.getElementById("diet").innerHTML = dietTip;
+        }
+        else if (category === "Normal weight"){
+            var dietTip = "💡Diet Tip:  Maintain a balanced diet with whole foods and hydration.";
+            document.getElementById("diet").innerHTML = dietTip;
+        }
+        else if (category === "Overweight"){
+            var dietTip = "💡Diet Tip: Focus on portion control, high-fiber foods, and lean proteins.";
+            document.getElementById("diet").innerHTML = dietTip;
+        }
+        else if (category === "Obese"){
+            var dietTip = "💡Diet Tip: Reduce processed foods, increase physical activity, and manage stress.";
+            document.getElementById("diet").innerHTML = dietTip;
+        }
+
+        let selectedSupplements = supplementInfo[category];
+        let listHTML = "<ul>";
+        selectedSupplements.forEach(supplement => {
+            listHTML += `<li><b>${supplement.name}:</b> ${supplement.use}</li>`;
+        });
+        listHTML += "</ul>";
+
+        document.getElementById("suggest").innerHTML = listHTML;
+    
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+
+    
+</script>
+</head>
+<body>
+    <header>
+    <button class="back-button" onclick="goBack()">← Back</button>
+    <h1>🧮BMI Calculator</h1>
+    <h3 style="color: white;">Calculate your BMI and get tailored diet tips and supplement suggestions!</h3><br>
+    </header>
+    Weight: <input id="weight" placeholder="In Kg" /><br>
+    Height: <input id="height" placeholder="In Cm" /><br>
+    <h2 id="result"></h2>
+    <button onclick="bmiCalculator()">Calculate</button><br>
+
+    <div id="supplement">
+        <button onclick="supplements()">Generate Suggestions</button><br>
+        <h2>Supplements Suggestions: </h2><h4 id="suggest"></h4><br>
+        <h4 id="diet"></h4>
+    </div>
+</body>
+</html>
